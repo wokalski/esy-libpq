@@ -1,0 +1,55 @@
+{
+  "name": "esy-libpq",
+  "version": "12.0.0",
+  "description": "PostgreSQL packaged for Esy",
+  "license": "PostgreSQL Licence",
+  "esy": {
+    "build": [
+      "./configure --prefix=$cur__install --with-openssl --disable-debug --enable-thread-safety --with-includes=$OPENSSL_INCLUDE_PATH --with-libraries=$OPENSSL_LIB_PATH --without-readline",
+      "make -C src/interfaces/libpq",
+      "make -C src/bin/pg_config",
+      "make -C src/backend",
+      "make -C src/include"
+    ],
+    "install": [
+      "make -C src/interfaces/libpq install",
+      "make -C src/bin/pg_config install",
+      "make -C src/backend generated-headers",
+      "make -C src/include install"
+    ],
+    "buildsInSource": true,
+    "exportedEnv": {
+      "PKG_CONFIG_PATH": {
+        "val": "#{self.lib / 'pkgconfig'}",
+        "scope": "global"
+      },
+      "LDFLAGS": {
+        "scope": "global",
+        "val": "-L#{self.lib} -lpq"
+      },
+      "CPPFLAGS": {
+        "scope": "global",
+        "val": "-I#{self.install / 'include'}"
+      },
+      "LD_LIBRARY_PATH": {
+        "scope": "global",
+        "val": "#{self.lib}:$LD_LIBRARY_PATH"
+      },
+      "LIBRARY_PATH": {
+        "scope": "global",
+        "val": "#{self.lib}:$LIBRARY_PATH"
+      },
+      "CPATH": {
+        "scope": "global",
+        "val": "#{self.install / 'include'}:$CPATH"
+      },
+      "PATH": {
+        "scope": "global",
+        "val": "#{self.bin}:$PATH"
+      }
+    }
+  },
+  "dependencies": {
+    "@reason-native-web/esy-openssl": "*"
+  }
+}
