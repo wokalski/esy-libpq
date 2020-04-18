@@ -50,6 +50,8 @@
     }
   },
   "dependencies": {
-    "@reason-native-web/esy-openssl": "*"
+    "@reason-native-web/esy-openssl": "*",
+    "esy-flex": "prometheansacrifice/esy-flex#98ffe2e",
+    "esy-zlib": "esy-packages/esy-zlib#404929f"
   }
 }
